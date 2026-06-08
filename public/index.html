@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History Department Education Culture Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #07192f 0%, #0a2240 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #33e0c4;
+        }
+
+        .igm-status {
+            background: #33e0c4;
+            color: #07192f;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-tab {
+            background: transparent;
+            border: 2px solid #33e0c4;
+            color: #33e0c4;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active, .nav-tab:hover {
+            background: #33e0c4;
+            color: #07192f;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .engagement-icon {
+            background: linear-gradient(135deg, #33e0c4, #2bc2a8);
+            color: white;
+        }
+
+        .research-icon {
+            background: linear-gradient(135deg, #ffca58, #f5b742);
+            color: #07192f;
+        }
+
+        .curriculum-icon {
+            background: linear-gradient(135deg, #07192f, #0a2240);
+            color: #33e0c4;
+        }
+
+        .outcomes-icon {
+            background: linear-gradient(135deg, #6c5ce7, #5a4fcf);
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #07192f;
+        }
+
+        .card-content {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #33e0c4;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #07192f;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #33e0c4;
+            box-shadow: 0 0 0 3px rgba(51, 224, 196, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #33e0c4, #2bc2a8);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(51, 224, 196, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #ffca58, #f5b742);
+            color: #07192f;
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 5px 15px rgba(255, 202, 88, 0.4);
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 500px;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #33e0c4;
+            box-shadow: 0 0 0 3px rgba(51, 224, 196, 0.1);
+        }
+
+        .log-entry {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid #33e0c4;
+        }
+
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .log-title {
+            font-weight: 600;
+            color: #07192f;
+        }
+
+        .log-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .log-content {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #33e0c4;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .footer {
+            background: #07192f;
+            color: #33e0c4;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-separator {
+            color: #ffca58;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-top {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <div class="logo">History Department Education Culture Tracker</div>
+            <div class="igm-status">IGM Status: Active</div>
+        </div>
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('dashboard')">Dashboard</button>
+            <button class="nav-tab" onclick="showSection('intake')">Student Intake</button>
+            <button class="nav-tab" onclick="showSection('faculty')">Faculty Research</button>
+            <button class="nav-tab" onclick="showSection('curriculum')">Curriculum</button>
+            <button class="nav-tab" onclick="showSection('contact-log')">Contact Log</button>
+            <button class="nav-tab" onclick="showSection('search')">Search</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">247</span>
+                    <div class="stat-label">Active Students</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">23</span>
+                    <div class="stat-label">Faculty Members</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">15</span>
+                    <div class="stat-label">Research Projects</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">8</span>
+                    <div class="stat-label">Course Programs</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon engagement-icon">📊</div>
+                        <div class="card-title">Student Engagement</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="metric">
+                            <span>Course Participation Rate</span>
+                            <span class="metric-value">89%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Assignment Completion</span>
+                            <span class="metric-value">94%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Discussion Forums</span>
+                            <span class="metric-value">76%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Office Hours Attendance</span>
+                            <span class="metric-value">45%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon research-icon">🔬</div>
+                        <div class="card-title">Faculty Research</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="metric">
+                            <span>Active Research Projects</span>
+                            <span class="metric-value">15</span>
+                        </div>
+                        <div class="metric">
+                            <span>Published Papers</span>
+                            <span class="metric-value">28</span>
+                        </div>
+                        <div class="metric">
+                            <span>Grant Applications</span>
+                            <span class="metric-value">7</span>
+                        </div>
+                        <div class="metric">
+                            <span>Conference Presentations</span>
+                            <span class="metric-value">12</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon curriculum-icon">📚</div>
+                        <div class="card-title">Curriculum Progress</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="metric">
+                            <span>Course Offerings</span>
+                            <span class="metric-value">45</span>
+                        </div>
+                        <div class="metric">
+                            <span>New Courses Developed</span>
+                            <span class="metric-value">3</span>
+                        </div>
+                        <div class="metric">
+                            <span>Curriculum Reviews</span>
+                            <span class="metric-value">2</span>
+                        </div>
+                        <div class="metric">
+                            <span>Cross-listed Courses</span>
+                            <span class="metric-value">8</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon outcomes-icon">🎯</div>
+                        <div class="card-title">Learning Outcomes</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="metric">
+                            <span>Graduation Rate</span>
+                            <span class="metric-value">92%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Graduate School Acceptance</span>
+                            <span class="metric-value">68%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Job Placement Rate</span>
+                            <span class="metric-value">85%</span>
+                        </div>
+                        <div class="metric">
+                            <span>Alumni Satisfaction</span>
+                            <span class="metric-value">4.6/5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Student Intake Section -->
+        <section id="intake" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon engagement-icon">👥</div>
+                    <div class="card-title">Student Intake Form</div>
+                </div>
+                <div class="card-content">
+                    <form>
+                        <div class="form-grid">
+                            <div>
+                                <div class="form-group">
+                                    <label class="form-label">Student ID</label>
+                                    <input type="text" class="form-control" placeholder="Enter student ID">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" placeholder="Enter full name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" placeholder="Enter email address">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Academic Year</label>
+                                    <select class="form-control">
+                                        <option>Select academic year</option>
+                                        <option>Freshman</option>
+                                        <option>Sophomore</option>
+                                        <option>Junior</option>
+                                        <option>Senior</option>
+                                        <option>Graduate</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <label class="form-label">Program Track</label>
+                                    <select class="form-control">
+                                        <option>Select program track</option>
+                                        <option>Ancient History</option>
+                                        <option>Medieval Studies</option>
+                                        <option>Modern History</option>
+                                        <option>American History</option>
+                                        <option>World History</option>
+                                        <option>Public History</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Advisor</label>
+                                    <select class="form-control">
+                                        <option>Select advisor</option>
+                                        <option>Dr. Sarah Johnson</option>
+                                        <option>Dr. Michael Chen</option>
+                                        <option>Dr. Emily Rodriguez</option>
+                                        <option>Dr. David Thompson</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Research Interests</label>
+                                    <textarea class="form-control" rows="3
